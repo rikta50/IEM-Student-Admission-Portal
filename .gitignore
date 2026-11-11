@@ -48,3 +48,5 @@ Thumbs.db
 
 # Local test documents
 backend/test-files/
+
+*.before-deployment

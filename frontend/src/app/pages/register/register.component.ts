@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 
+import { API_BASE_URL } from '../../api.config';
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -14,7 +16,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class RegisterComponent implements OnDestroy {
 
-  private apiUrl = 'http://localhost:5000/api/v1/auth/register';
+  private apiUrl = `${API_BASE_URL}/auth/register`;
 
   private redirectTimer: ReturnType<typeof setTimeout> | null = null;
 

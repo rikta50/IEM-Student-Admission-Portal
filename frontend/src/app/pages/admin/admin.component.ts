@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+import { API_BASE_URL } from '../../api.config';
+
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -13,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent implements OnInit {
-  private readonly api = 'http://localhost:5000/api/v1';
+  private readonly api = API_BASE_URL;
 
   adminName = 'Administrator';
   loading = false;

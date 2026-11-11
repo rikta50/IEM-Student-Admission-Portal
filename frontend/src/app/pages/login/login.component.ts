@@ -1,8 +1,10 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
+import { API_BASE_URL } from '../../api.config';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  private apiUrl = 'http://localhost:5000/api/v1/auth/login';
+  private apiUrl = `${API_BASE_URL}/auth/login`;
 
   email = '';
   password = '';

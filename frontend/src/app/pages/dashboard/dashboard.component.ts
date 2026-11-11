@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 
+import { API_BASE_URL } from '../../api.config';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -12,7 +14,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  private apiUrl = 'http://localhost:5000/api/v1/applications/my-application';
+  private apiUrl = `${API_BASE_URL}/applications/my-application`;
 
   studentName = 'Student';
   studentEmail = '';
@@ -237,7 +239,7 @@ examSuccess = '';
   });
 
   this.http.get<any>(
-    'http://localhost:5000/api/v1/entrance-exam/my-status',
+    `${API_BASE_URL}/entrance-exam/my-status`,
     { headers }
   ).subscribe({
     next: response => {
@@ -271,7 +273,7 @@ payDemo(): void {
   });
 
   this.http.post<any>(
-    'http://localhost:5000/api/v1/entrance-exam/pay-demo',
+    `${API_BASE_URL}/entrance-exam/pay-demo`,
     {},
     { headers }
   ).subscribe({

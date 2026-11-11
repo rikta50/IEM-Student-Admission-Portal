@@ -28,6 +28,8 @@ interface UploadedDocument {
   uploadedAt: string;
 }
 
+import { API_BASE_URL } from '../../api.config';
+
 @Component({
   selector: 'app-application',
   standalone: true,
@@ -37,7 +39,7 @@ interface UploadedDocument {
 })
 export class ApplicationComponent implements OnInit {
 
-  private readonly apiBase = 'http://localhost:5000/api/v1';
+  private readonly apiBase = API_BASE_URL;
 
   // Course
   selectedCourse = '';
