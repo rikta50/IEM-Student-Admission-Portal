@@ -1,0 +1,162 @@
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: #f3f6fb;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.back-link {
+  color: #143e73;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.logo {
+  margin: 25px auto 20px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #143e73;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+}
+
+h1 {
+  color: #143e73;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #718096;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+  color: #263b53;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px;
+  border: 1px solid #d5dce7;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #143e73;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background: #143e73;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background: #0c2d56;
+}
+
+.login-text {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.login-text a {
+  color: #143e73;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 70px;
+}
+
+.show-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #143e73;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.password-strength {
+  margin-top: 9px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.password-strength .weak {
+  color: #dc2626;
+}
+
+.password-strength .medium {
+  color: #d97706;
+}
+
+.password-strength .strong {
+  color: #16a34a;
+}
+
+.password-hint {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.match-message {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.match-success {
+  color: #16a34a;
+}
+
+.match-error {
+  color: #dc2626;
+}

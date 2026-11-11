@@ -1,0 +1,50 @@
+﻿# Dependencies
+node_modules/
+**/node_modules/
+
+# Angular build output
+**/dist/
+**/coverage/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.template
+
+# SQLite databases and database backups
+backend/database/*.sqlite
+backend/database/*.sqlite3
+backend/database/*.db
+backend/database/*.sqlite-*
+
+# Student uploaded documents
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Temporary backup files
+*.bak
+*.backup*
+*.success-backup
+
+# Local test documents
+backend/test-files/

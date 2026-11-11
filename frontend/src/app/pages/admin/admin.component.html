@@ -1,0 +1,455 @@
+
+<div class="admin-layout">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">I</div>
+      <div>
+        <h2>IEM</h2>
+        <span>Admission Portal</span>
+      </div>
+    </div>
+
+    <div class="admin-label">ADMINISTRATION</div>
+
+    <nav>
+      <a class="nav-link active">
+        <span></span> Dashboard
+      </a>
+      <a class="nav-link" href="#applications">
+        <span></span> Applications
+      </a>
+      <a class="nav-link" href="#analytics">
+        <span></span> Analytics
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="admin-profile">
+        <div class="avatar">{{ adminName.charAt(0).toUpperCase() }}</div>
+        <div class="profile-text">
+          <strong>{{ adminName }}</strong>
+          <span>Administrator</span>
+        </div>
+      </div>
+      <button class="logout-button" (click)="logout()"> Logout</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">IEM ADMISSION MANAGEMENT</p>
+        <h1>Admin Dashboard</h1>
+        <p class="subtitle">Manage student applications and admission decisions.</p>
+      </div>
+      <button class="export-button" (click)="exportCsv()">
+         Export CSV
+      </button>
+    </header>
+
+    <div class="message error" *ngIf="errorMessage">
+      {{ errorMessage }}
+      <button (click)="errorMessage = ''"></button>
+    </div>
+
+    <div class="message success" *ngIf="successMessage">
+      {{ successMessage }}
+      <button (click)="successMessage = ''"></button>
+    </div>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-icon blue"></div>
+        <p>Registered Students</p>
+        <h2>{{ statistics.totalRegisteredStudents || 0 }}</h2>
+        <span>Total student accounts</span>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon purple"></div>
+        <p>Submitted Applications</p>
+        <h2>{{ statistics.totalSubmittedApplications || 0 }}</h2>
+        <span>Applications received</span>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon orange"></div>
+        <p>Pending Applications</p>
+        <h2>{{ statistics.statusCounts?.pending || 0 }}</h2>
+        <span>Awaiting final decision</span>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon green"></div>
+        <p>Selected Students</p>
+        <h2>{{ statistics.statusCounts?.selected || 0 }}</h2>
+        <span>Successfully selected</span>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon red"></div>
+        <p>Rejected Applications</p>
+        <h2>{{ statistics.statusCounts?.rejected || 0 }}</h2>
+        <span>Rejected applications</span>
+      </article>
+    </section>
+
+    <section class="analytics-section" id="analytics">
+      <div class="section-heading">
+        <div>
+          <h2>Application Overview</h2>
+          <p>Current admission cycle statistics</p>
+        </div>
+        <button class="refresh-button"
+                (click)="loadDashboard(); loadApplications()">
+           Refresh
+        </button>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="status-dot submitted-dot"></span>
+          <div><strong>{{ statistics.statusCounts?.submitted || 0 }}</strong>
+            <span>Submitted</span></div>
+        </div>
+        <div class="status-item">
+          <span class="status-dot review-dot"></span>
+          <div><strong>{{ statistics.statusCounts?.underReview || 0 }}</strong>
+            <span>Under Review</span></div>
+        </div>
+        <div class="status-item">
+          <span class="status-dot selected-dot"></span>
+          <div><strong>{{ statistics.statusCounts?.selected || 0 }}</strong>
+            <span>Selected</span></div>
+        </div>
+        <div class="status-item">
+          <span class="status-dot rejected-dot"></span>
+          <div><strong>{{ statistics.statusCounts?.rejected || 0 }}</strong>
+            <span>Rejected</span></div>
+        </div>
+      </div>
+
+      <h3 class="demand-title">Department-wise Demand</h3>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Applicants</th>
+              <th>Intake Capacity</th>
+              <th>Average Entrance Rank</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let department of statistics.departmentDemand">
+              <td>
+                <strong>{{ department.name }}</strong>
+                <small>{{ department.code }}</small>
+              </td>
+              <td>{{ department.totalApplicants }}</td>
+              <td>{{ department.intakeCapacity }}</td>
+              <td>{{ department.avgRank ?? '' }}</td>
+            </tr>
+            <tr *ngIf="!statistics.departmentDemand?.length">
+              <td colspan="4" class="empty-cell">No department demand data available.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="analytics-section" id="entrance-exam">
+  <div class="section-heading">
+    <div>
+      <h2>Entrance Examination Management</h2>
+      <p>Configure and publish the examination schedule.</p>
+    </div>
+    <span class="status-badge">
+      {{ examSettings.isPublished ? 'Published' : 'Not Published' }}
+    </span>
+  </div>
+
+  <p *ngIf="examLoading">Loading examination settings...</p>
+  <p class="message error" *ngIf="examError">{{ examError }}</p>
+  <p class="message success" *ngIf="examSuccess">{{ examSuccess }}</p>
+
+  <div class="decision-panel">
+    <label>Examination Fee (₹)</label>
+    <input type="number" min="0" [(ngModel)]="examSettings.feeAmount">
+
+    <label>Examination Date</label>
+    <input type="date" [(ngModel)]="examSettings.examDate">
+
+    <label>Examination Time</label>
+    <input type="time" [(ngModel)]="examSettings.examTime">
+
+    <label>Examination Centre</label>
+    <input type="text" [(ngModel)]="examSettings.examCentre"
+           placeholder="Enter examination centre">
+
+    <label>Centre Address</label>
+    <textarea rows="2" [(ngModel)]="examSettings.examAddress"
+              placeholder="Enter complete address"></textarea>
+
+    <label>Instructions</label>
+    <textarea rows="3" [(ngModel)]="examSettings.instructions"
+              placeholder="Enter examination instructions"></textarea>
+
+    <label>
+      <input type="checkbox" [(ngModel)]="examSettings.isPublished">
+      Publish examination schedule to eligible students
+    </label>
+
+    <button class="primary-button"
+            [disabled]="examSaving"
+            (click)="saveExamSettings()">
+      {{ examSaving ? 'Saving...' : 'Save Examination Settings' }}
+    </button>
+  </div>
+
+  <h3>Entrance Examination Registrations</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Application Number</th>
+          <th>Payment Status</th>
+          <th>Payment Reference</th>
+          <th>Hall Ticket Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let registration of examRegistrations">
+          <td>{{ registration.applicant?.fullName || '-' }}</td>
+          <td>{{ registration.application?.applicationNumber || '-' }}</td>
+          <td>{{ registration.paymentStatus || 'Pending' }}</td>
+          <td>{{ registration.demoPaymentReference || '-' }}</td>
+          <td>{{ registration.hallTicketNumber || '-' }}</td>
+        </tr>
+        <tr *ngIf="!examRegistrations.length">
+          <td colspan="5" class="empty-cell">
+            No examination registrations yet.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+    <section class="applications-section" id="applications">
+      <div class="section-heading">
+        <div>
+          <h2>Student Applications</h2>
+          <p>Search, filter and review submitted applications.</p>
+        </div>
+        <span class="total-count">{{ totalApplications }} applications</span>
+      </div>
+
+      <div class="filters">
+        <input
+          type="text"
+          [(ngModel)]="search"
+          placeholder="Search name, email, phone or application number"
+          (keyup.enter)="applyFilters()"
+        />
+
+        <select [(ngModel)]="statusFilter">
+          <option value="">All statuses</option>
+          <option value="Submitted">Submitted</option>
+          <option value="Under Review">Under Review</option>
+          <option value="Selected">Selected</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+
+        <select [(ngModel)]="departmentFilter">
+          <option value="">All departments</option>
+          <option *ngFor="let department of departments"
+                  [value]="department.id">
+            {{ department.name }}
+          </option>
+        </select>
+
+        <button class="primary-button" (click)="applyFilters()">Search</button>
+        <button class="clear-button" (click)="clearFilters()">Clear</button>
+      </div>
+
+      <div class="table-wrapper applications-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Application No.</th>
+              <th>Student</th>
+              <th>Email</th>
+              <th>First Preference</th>
+              <th>Submitted Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let app of applications">
+              <td><strong>{{ app.applicationNumber || '' }}</strong></td>
+              <td>{{ app.applicant?.fullName || '' }}</td>
+              <td>{{ app.applicant?.email || '' }}</td>
+              <td>{{ getFirstPreference(app) }}</td>
+              <td>{{ formatDate(app.submittedAt) }}</td>
+              <td>
+                <span class="status-badge"
+                      [ngClass]="getStatusClass(app.status)">
+                  {{ app.status }}
+                </span>
+              </td>
+              <td>
+                <button class="view-button"
+                        (click)="viewApplication(app.id)">
+                  Review 
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="!loading && !applications.length">
+              <td colspan="7" class="empty-cell">
+                No applications found.
+              </td>
+            </tr>
+
+            <tr *ngIf="loading">
+              <td colspan="7" class="empty-cell">Loading applications...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <div>
+          <button [disabled]="currentPage <= 1"
+                  (click)="changePage(currentPage - 1)">Previous</button>
+          <button [disabled]="currentPage >= totalPages"
+                  (click)="changePage(currentPage + 1)">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-section" *ngIf="detailLoading">
+      Loading student application details...
+    </section>
+
+    <section class="detail-section" *ngIf="selectedApplication as app">
+      <div class="detail-heading">
+        <div>
+          <p class="eyebrow">APPLICATION REVIEW</p>
+          <h2>{{ app.applicant?.fullName || 'Student Details' }}</h2>
+          <p>{{ app.applicationNumber }}</p>
+        </div>
+        <button class="clear-button" (click)="closeDetails()">Close </button>
+      </div>
+
+      <div class="detail-grid">
+        <div><span>Email</span><strong>{{ app.applicant?.email || '' }}</strong></div>
+        <div><span>Phone</span><strong>{{ app.applicant?.phone || '' }}</strong></div>
+        <div><span>Date of Birth</span><strong>{{ formatDate(app.personalDetails?.dob) }}</strong></div>
+        <div><span>Gender</span><strong>{{ app.personalDetails?.gender || '' }}</strong></div>
+        <div><span>Category</span><strong>{{ app.personalDetails?.category || '' }}</strong></div>
+        <div><span>Guardian</span><strong>{{ app.personalDetails?.guardianName || '' }}</strong></div>
+        <div><span>Guardian Phone</span><strong>{{ app.personalDetails?.guardianPhone || '' }}</strong></div>
+        <div><span>Application Status</span><strong>{{ app.status }}</strong></div>
+      </div>
+
+      <h3>Permanent Address</h3>
+      <p>
+        {{ app.personalDetails?.permanentAddressLine1 || '' }}
+        {{ app.personalDetails?.permanentCity || '' }}
+        {{ app.personalDetails?.permanentState || '' }}
+        {{ app.personalDetails?.permanentPincode || '' }}
+      </p>
+
+      <h3>Academic Details</h3>
+      <div class="detail-grid">
+        <div><span>Class 10 Board</span><strong>{{ app.academicDetails?.class10Board || '' }}</strong></div>
+        <div><span>Class 10 Percentage</span><strong>{{ app.academicDetails?.class10Percentage ?? '' }}</strong></div>
+        <div><span>Class 12 Board</span><strong>{{ app.academicDetails?.class12Board || '' }}</strong></div>
+        <div><span>Class 12 Percentage</span><strong>{{ app.academicDetails?.class12AggregatePercentage ?? '' }}</strong></div>
+        <div><span>Class 12 Stream</span><strong>{{ app.academicDetails?.class12Stream || '' }}</strong></div>
+        <div><span>Entrance Exam</span><strong>{{ app.academicDetails?.entranceExamType || '' }}</strong></div>
+        <div><span>Entrance Rank</span><strong>{{ app.academicDetails?.entranceExamRank ?? '' }}</strong></div>
+      </div>
+
+      <h3>Department Preferences</h3>
+      <div class="preference-list">
+        <div *ngFor="let preference of app.departmentPreferences">
+          <strong>Preference {{ preference.priority }}:</strong>
+          {{ preference.department?.name || 'Department' }}
+        </div>
+        <p *ngIf="!app.departmentPreferences?.length">No preferences recorded.</p>
+      </div>
+
+      <h3>Uploaded Documents</h3>
+      <div class="document-list">
+        <div *ngFor="let doc of app.documents">
+          <div>
+            <strong>{{ doc.docType }}</strong>
+            <small>{{ doc.originalName }}</small>
+          </div>
+          <button class="view-button"
+                  (click)="viewDocument(app.id, doc.docType)">
+            View Document
+          </button>
+        </div>
+        <p *ngIf="!app.documents?.length">No documents uploaded.</p>
+      </div>
+
+      <h3>Application Decision</h3>
+      <div class="decision-panel">
+        <label>Update Status</label>
+        <select [(ngModel)]="newStatus">
+          <option value="">Choose a status</option>
+          <option *ngFor="let status of getAvailableStatuses()" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+
+        <label>Assign Department (required when selecting if none is already assigned)</label>
+        <select [(ngModel)]="assignedDepartment">
+          <option [ngValue]="null">Use first preference</option>
+          <option *ngFor="let department of departments"
+                  [ngValue]="department.id">
+            {{ department.name }}
+          </option>
+        </select>
+
+        <label>Remarks</label>
+        <textarea [(ngModel)]="remarks"
+                  rows="3"
+                  placeholder="Enter decision remarks..."></textarea>
+
+        <button class="primary-button"
+                [disabled]="updating"
+                (click)="updateStatus()">
+          {{ updating ? 'Updating...' : 'Save Decision' }}
+        </button>
+      </div>
+
+      <h3>Status History</h3>
+      <div class="history-list">
+        <div *ngFor="let history of app.auditHistory">
+          <strong>{{ history.previousStatus || 'New' }}  {{ history.newStatus }}</strong>
+          <span>{{ history.remarks || 'Status updated' }}</span>
+          <small>{{ formatDate(history.changedAt) }}</small>
+        </div>
+        <p *ngIf="!app.auditHistory?.length">No status history available.</p>
+      </div>
+    </section>
+
+    <footer>
+      IEM Student Admission Portal  Administration Panel
+    </footer>
+
+  </main>
+</div>

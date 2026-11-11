@@ -1,0 +1,285 @@
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar" id="home">
+
+  <!-- Top institutional branding -->
+  <div class="navbar-top">
+
+    <div class="institution-logo left-logo">
+      <img src="/logos/iem-logo.png" alt="IEM Official Logo">
+    </div>
+
+    <div class="portal-heading">
+      <h2>STUDENT ADMISSION PORTAL</h2>
+      <p>Institute of Engineering &amp; Management, Kolkata</p>
+    </div>
+
+    <div class="institution-logo right-logo">
+      <img src="/logos/uem-logo.png" alt="UEM Official Logo">
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="navbar-bottom">
+
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#programmes">Programmes</a>
+      <a href="#admission">Admission Process</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a routerLink="/login" class="login-btn">Student Login</a>
+      <a routerLink="/register" class="register-btn">Apply Now</a>
+    </div>
+
+  </div>
+</header>
+
+
+<!-- ================= ABOUT IEMJEE & IEMCET ================= -->
+
+<section class="about-exam-section" id="admission">
+
+  <h2 class="section-heading">ABOUT IEMJEE &amp; IEMCET</h2>
+
+  <div class="about-exam-container">
+
+    <!-- Left image -->
+    <div class="exam-image-container">
+
+      <img
+  src="/images/iem-entrance-exam.png"
+  alt="Institute of Engineering and Management Campus"
+>
+      >
+
+      <div class="image-caption">
+        IEM ENTRANCE EXAMINATION
+      </div>
+
+    </div>
+
+    <!-- Right information -->
+    <div class="exam-information">
+
+      <h2>IEM Entrance Examination</h2>
+
+      <p>
+        IEMJEE is conducted by the reputed IEM Group for admission
+        to B.Tech courses of IEM (Institute of Engineering &amp;
+        Management) and UEM (University of Engineering &amp;
+        Management).
+      </p>
+
+      <p>
+        <strong>IEMJEE</strong> examination is conducted for admissions
+        to B.Tech courses at IEM Salt Lake, IEM New Town and IEM Jaipur.
+      </p>
+
+      <p>
+        <strong>IEMCET</strong> examination is conducted for admissions
+        to programmes including BBA, BCA, BBA LLB, BHM, MCA and
+        M.Tech, subject to the courses offered by the respective campus.
+      </p>
+
+      <div class="exam-buttons">
+
+        <a routerLink="/register" class="apply-button">
+          Apply Now
+        </a>
+
+        <a
+          href="#programmes"
+          class="prospectus-button"
+        >
+          Programmes
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= PROGRAMMES OFFERED ================= -->
+
+<section class="programmes-section" id="programmes">
+
+  <h2 class="section-heading">PROGRAMMES OFFERED</h2>
+
+  <!-- Campus selection -->
+  <div class="campus-tabs">
+
+    <button
+      type="button"
+      [class.active]="selectedCampus === 'saltlake'"
+      (click)="selectedCampus = 'saltlake'">
+      IEM SALT LAKE
+    </button>
+
+    <button
+      type="button"
+      [class.active]="selectedCampus === 'newtown'"
+      (click)="selectedCampus = 'newtown'">
+      IEM NEW TOWN
+    </button>
+
+    <button
+      type="button"
+      [class.active]="selectedCampus === 'jaipur'"
+      (click)="selectedCampus = 'jaipur'">
+      IEM JAIPUR
+    </button>
+
+  </div>
+
+
+  <!-- Programme details -->
+  <div class="programmes-content">
+
+    <!-- Left column -->
+    <div class="programme-column">
+
+      <h3>UNDER GRADUATE PROGRAMMES</h3>
+
+      <h4>Bachelor of Technology [4 Years]</h4>
+
+      <ul>
+        <li>Computer Science &amp; Engineering (CSE)</li>
+        <li>CSE - Artificial Intelligence &amp; Machine Learning</li>
+        <li>Information Technology</li>
+        <li>Electronics &amp; Communication Engineering</li>
+        <li>Mechanical Engineering</li>
+        <li>Electrical Engineering</li>
+      </ul>
+
+
+      <h4>Management [4 Years]</h4>
+
+      <ul>
+        <li>Bachelor of Business Administration (BBA)</li>
+      </ul>
+
+    </div>
+
+
+    <!-- Right column -->
+    <div class="programme-column">
+
+      <h4>Bachelor of Hotel Management [4 Years]</h4>
+
+      <ul>
+        <li>BHMC - Bachelor of Hotel Management and Catering Technology</li>
+        <li>B.Sc. - Bachelor of Science in Hospitality &amp; Hotel Administration</li>
+      </ul>
+
+
+      <h3>POST GRADUATE PROGRAMMES</h3>
+
+      <h4>Master of Technology [2 Years]</h4>
+
+      <ul>
+        <li>Computer Science &amp; Engineering</li>
+        <li>CSE - Artificial Intelligence &amp; Machine Learning</li>
+        <li>Electronics &amp; Communication Engineering</li>
+      </ul>
+
+
+      <h4>MBA &amp; MBA in General Management [2 Years]</h4>
+
+      <ul>
+        <li>Master of Business Administration</li>
+      </ul>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= ADMISSION PROCESS ================= -->
+
+<section class="admission-process-section">
+
+  <h2 class="section-heading">ADMISSION PROCESS</h2>
+
+  <div class="admission-steps">
+
+    <div class="admission-step">
+      <span>01</span>
+      <h3>Student Registration</h3>
+      <p>Create your account on the Student Admission Portal.</p>
+    </div>
+
+    <div class="admission-step">
+      <span>02</span>
+      <h3>Application Form</h3>
+      <p>Fill in your personal, academic and programme details.</p>
+    </div>
+
+    <div class="admission-step">
+      <span>03</span>
+      <h3>Document Verification</h3>
+      <p>Upload the required documents for verification.</p>
+    </div>
+
+    <div class="admission-step">
+      <span>04</span>
+      <h3>Application Status</h3>
+      <p>Track your application and check admission updates.</p>
+    </div>
+
+  </div>
+
+  <div class="admission-apply">
+    <a routerLink="/register" class="apply-button">
+      Start Your Application
+    </a>
+  </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<footer class="home-footer" id="contact">
+
+  <div class="footer-content">
+
+    <div>
+      <h3>INSTITUTE OF ENGINEERING &amp; MANAGEMENT</h3>
+      <p>Student Admission Portal</p>
+      <p>Kolkata, West Bengal, India</p>
+    </div>
+
+    <div>
+      <h3>QUICK LINKS</h3>
+      <a href="#home">Home</a>
+      <a href="#programmes">Programmes</a>
+      <a href="#admission">Admission Process</a>
+      <a routerLink="/login">Student Login</a>
+    </div>
+
+    <div>
+      <h3>ADMISSION PORTAL</h3>
+      <p>Register to begin your application.</p>
+      <a routerLink="/register" class="footer-apply-button">
+        Apply Now
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Student Admission Portal | IEM Kolkata</p>
+  </div>
+
+</footer>

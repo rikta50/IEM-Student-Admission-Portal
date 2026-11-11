@@ -1,0 +1,623 @@
+
+<div class="application-page">
+
+  <!-- HEADER -->
+  <header class="application-header">
+    <div class="header-brand">
+      <div class="brand-logo">IEM</div>
+      <div>
+        <h2>IEM Admission Portal</h2>
+        <p>Student Admission Application</p>
+      </div>
+    </div>
+
+    <a routerLink="/dashboard" class="back-button">
+      Back to Dashboard
+    </a>
+  </header>
+
+  <main class="application-container">
+
+    <!-- SUCCESSFUL SUBMISSION -->
+    <section class="submission-success" *ngIf="isSubmitted()">
+
+      <div class="success-icon" aria-label="Success">SUCCESS</div>
+
+      <span class="heading-label">APPLICATION SUBMITTED</span>
+
+      <h1>Congratulations!</h1>
+
+      <p>
+        Your admission application has been successfully submitted.
+        Your application is now locked.
+      </p>
+
+      <div class="application-number-card">
+        <span>YOUR APPLICATION NUMBER</span>
+        <strong>{{ applicationNumber || 'Generating...' }}</strong>
+      </div>
+
+      <div class="submitted-details">
+        <p>
+          <strong>Status:</strong>
+          {{ applicationStatus }}
+        </p>
+
+        <p *ngIf="submittedAt">
+          <strong>Submitted At:</strong>
+          {{ submittedAt | date:'medium' }}
+        </p>
+      </div>
+
+      <section class="uploaded-documents"><h2>Documents Uploaded</h2><p>Your submitted documents are listed below.</p><div class="uploaded-document" *ngIf="getUploadedDocument('photo') as photoDoc"><span><strong>Student Photograph</strong><br>{{ photoDoc.originalName }}</span><button type="button" (click)="viewDocument('photo')">View Document</button></div><div class="uploaded-document" *ngIf="getUploadedDocument('marksheet10') as mark10"><span><strong>Class 10 Marksheet</strong><br>{{ mark10.originalName }}</span><button type="button" (click)="viewDocument('marksheet10')">View Document</button></div><div class="uploaded-document" *ngIf="getUploadedDocument('marksheet12') as mark12"><span><strong>Class 12 Marksheet</strong><br>{{ mark12.originalName }}</span><button type="button" (click)="viewDocument('marksheet12')">View Document</button></div></section><p class="success-note">
+        Please save your application number for future reference.
+      </p>
+
+      <a routerLink="/dashboard" class="submit-btn">
+        Go to Dashboard</a>
+
+    </section>
+
+    <!-- APPLICATION FORM -->
+    <ng-container *ngIf="!isSubmitted()">
+
+      <div class="page-heading">
+        <span class="heading-label">ADMISSION 2026-27</span>
+        <h1>Admission Application Form</h1>
+        <p>
+          Provide your personal and academic information
+          carefully to complete your admission application.
+        </p>
+      </div>
+
+      <div class="success-message" *ngIf="loading">
+        Loading application information...
+      </div>
+
+      <form
+        (ngSubmit)="saveApplication()"
+        #applicationForm="ngForm">
+
+        <!-- SECTION 1: COURSE -->
+        <section class="form-section">
+
+          <div class="section-title">
+            <span class="section-number">01</span>
+            <div>
+              <h2>Course Selection</h2>
+              <p>Select the programme for which you want to apply.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Select Course <span>*</span></label>
+
+            <select
+              name="selectedCourse"
+              [(ngModel)]="selectedCourse"
+              (ngModelChange)="onCourseChange()"
+              required>
+
+              <option value="">Choose your course</option>
+
+              <option
+                *ngFor="let course of courseOptions"
+                [value]="course">
+                {{ course }}
+              </option>
+
+            </select>
+          </div>
+
+          <div class="iem-jee-notice" *ngIf="iemJeeRequired">
+            <h3>IEM JEE Entrance Examination</h3>
+            <p>
+              You have selected B.Tech. Your application will follow
+              the applicable IEM JEE admission pathway.
+            </p>
+          </div>
+
+          <div
+            class="normal-admission-notice"
+            *ngIf="selectedCourse && !iemJeeRequired">
+
+            <h3>Regular Admission Process</h3>
+            <p>
+              Your selected course will follow the applicable
+              regular admission process.
+            </p>
+          </div>
+
+        </section>
+
+        <!-- SECTION 2: PERSONAL DETAILS -->
+        <section class="form-section">
+
+          <div class="section-title">
+            <span class="section-number">02</span>
+            <div>
+              <h2>Personal Information</h2>
+              <p>Enter your personal details.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group full-width">
+              <label>Full Name <span>*</span></label>
+              <input
+                type="text"
+                name="fullName"
+                [(ngModel)]="fullName"
+                placeholder="Enter your full name"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Date of Birth <span>*</span></label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                [(ngModel)]="dateOfBirth"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Gender <span>*</span></label>
+              <select
+                name="gender"
+                [(ngModel)]="gender"
+                required>
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Email Address <span>*</span></label>
+              <input
+                type="email"
+                name="email"
+                [(ngModel)]="email"
+                placeholder="Enter your email"
+                required
+                email />
+            </div>
+
+            <div class="form-group">
+              <label>Mobile Number <span>*</span></label>
+              <input
+                type="tel"
+                name="phone"
+                [(ngModel)]="phone"
+                placeholder="Mobile number"
+                maxlength="10"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Alternate Mobile Number</label>
+              <input
+                type="tel"
+                name="alternatePhone"
+                [(ngModel)]="alternatePhone"
+                placeholder="Alternate mobile number"
+                maxlength="10" />
+            </div>
+
+            <div class="form-group">
+              <label>Category</label>
+              <select
+                name="category"
+                [(ngModel)]="category">
+                <option value="">Select category</option>
+                <option value="General">General</option>
+                <option value="SC">SC</option>
+                <option value="ST">ST</option>
+                <option value="OBC-A">OBC-A</option>
+                <option value="OBC-B">OBC-B</option>
+                <option value="EWS">EWS</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Guardian Name <span>*</span></label>
+              <input
+                type="text"
+                name="guardianName"
+                [(ngModel)]="guardianName"
+                placeholder="Enter guardian name"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Guardian Phone <span>*</span></label>
+              <input
+                type="tel"
+                name="guardianPhone"
+                [(ngModel)]="guardianPhone"
+                placeholder="Guardian mobile number"
+                maxlength="10"
+                required />
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECTION 3: ADDRESS -->
+        <section class="form-section">
+
+          <div class="section-title">
+            <span class="section-number">03</span>
+            <div>
+              <h2>Address Information</h2>
+              <p>Provide your permanent residential address.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group full-width">
+              <label>Full Address <span>*</span></label>
+              <textarea
+                name="address"
+                [(ngModel)]="address"
+                placeholder="Enter your complete address"
+                rows="3"
+                required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>City <span>*</span></label>
+              <input
+                type="text"
+                name="city"
+                [(ngModel)]="city"
+                placeholder="Enter city"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>State <span>*</span></label>
+              <input
+                type="text"
+                name="state"
+                [(ngModel)]="state"
+                placeholder="Enter state"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>PIN Code <span>*</span></label>
+              <input
+                type="text"
+                name="pinCode"
+                [(ngModel)]="pinCode"
+                placeholder="6-digit PIN code"
+                maxlength="6"
+                required />
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECTION 4: CLASS 10 -->
+        <section class="form-section">
+
+          <div class="section-title">
+            <span class="section-number">04</span>
+            <div>
+              <h2>Class 10 Academic Details</h2>
+              <p>Provide your secondary examination information.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Board Name <span>*</span></label>
+              <input
+                type="text"
+                name="class10Board"
+                [(ngModel)]="class10Board"
+                placeholder="CBSE, ICSE, WBBSE"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>School Name <span>*</span></label>
+              <input
+                type="text"
+                name="class10School"
+                [(ngModel)]="class10School"
+                placeholder="Enter school name"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Passing Year <span>*</span></label>
+              <input
+                type="number"
+                name="class10PassingYear"
+                [(ngModel)]="class10PassingYear"
+                placeholder="e.g. 2024"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Percentage <span>*</span></label>
+              <input
+                type="number"
+                name="class10Percentage"
+                [(ngModel)]="class10Percentage"
+                placeholder="Enter percentage"
+                min="0"
+                max="100"
+                step="0.01"
+                required />
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECTION 5: CLASS 12 -->
+        <section class="form-section">
+
+          <div class="section-title">
+            <span class="section-number">05</span>
+            <div>
+              <h2>Class 12 Academic Details</h2>
+              <p>Provide your higher secondary examination information.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Board Name <span>*</span></label>
+              <input
+                type="text"
+                name="class12Board"
+                [(ngModel)]="class12Board"
+                placeholder="CBSE, ISC, WBCHSE"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>School Name <span>*</span></label>
+              <input
+                type="text"
+                name="class12School"
+                [(ngModel)]="class12School"
+                placeholder="Enter school name"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Stream <span>*</span></label>
+              <select
+                name="class12Stream"
+                [(ngModel)]="class12Stream"
+                required>
+                <option value="">Select stream</option>
+                <option value="Science">Science</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Arts">Arts</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Passing Year <span>*</span></label>
+              <input
+                type="number"
+                name="class12PassingYear"
+                [(ngModel)]="class12PassingYear"
+                placeholder="e.g. 2026"
+                required />
+            </div>
+
+            <div class="form-group">
+              <label>Percentage <span>*</span></label>
+              <input
+                type="number"
+                name="class12Percentage"
+                [(ngModel)]="class12Percentage"
+                placeholder="Enter percentage"
+                min="0"
+                max="100"
+                step="0.01"
+                required />
+            </div>
+
+          </div>
+        </section>
+
+        <!-- SECTION 6: DEPARTMENT PREFERENCES -->
+        <section class="form-section">
+
+          <div class="section-title">
+            <span class="section-number">06</span>
+            <div>
+              <h2>Department Preferences</h2>
+              <p>Select up to five departments in your preferred order.</p>
+            </div>
+          </div>
+
+          <div *ngIf="loadingDepartments">
+            Loading available departments...
+          </div>
+
+          <div
+            class="error-message"
+            *ngIf="!loadingDepartments && departments.length === 0">
+            No active departments are currently available.
+          </div>
+
+          <div
+            class="form-group"
+            *ngIf="departments.length > 0">
+
+            <div
+              class="department-option"
+              *ngFor="let department of departments">
+
+              <label>
+                <input
+                  #departmentCheckbox
+                  type="checkbox"
+                  [checked]="selectedDepartmentIds.includes(department.id)"
+                  [disabled]="
+                    !selectedDepartmentIds.includes(department.id) &&
+                    selectedDepartmentIds.length >= 5
+                  "
+                  (change)="toggleDepartment(
+                    department.id,
+                    departmentCheckbox.checked
+                  )" />
+
+                <span>
+                  <strong>{{ department.name }}</strong>
+                  <small>
+                    {{ department.code }} |
+                    {{ department.degree }} |
+                    {{ department.campus }}
+                  </small>
+                </span>
+              </label>
+
+            </div>
+
+            <p>
+              Selected departments:
+              {{ selectedDepartmentIds.length }}/5
+            </p>
+
+            <h3 *ngIf="selectedDepartmentIds.length > 0">
+              Your Preference Order
+            </h3>
+
+            <ol>
+              <li *ngFor="let departmentId of selectedDepartmentIds">
+                {{ getDepartmentName(departmentId) }}
+              </li>
+            </ol>
+
+          </div>
+        </section>
+
+        <!-- SECTION 7: DOCUMENT UPLOAD -->
+        
+
+        <!-- SECTION 8: IEM JEE -->
+        <section
+          class="form-section iem-jee-section"
+          *ngIf="iemJeeRequired">
+
+          <div class="section-title">
+            <span class="section-number">08</span>
+            <div>
+              <h2>IEM JEE Examination</h2>
+              <p>Entrance examination information for B.Tech applicants.</p>
+            </div>
+          </div>
+
+          <div class="exam-information">
+            <h3>IEM JEE Entrance Examination</h3>
+
+            <p>
+              Your application is marked for the B.Tech admission
+              pathway. Examination details, eligibility, schedule
+              and admit card information will follow the official
+              admission process.
+            </p>
+          </div>
+        </section>
+
+        <!-- SUBMISSION REQUIREMENTS -->
+        
+
+        <!-- SERVER VALIDATION ERRORS -->
+        <div class="error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <div
+          class="error-message"
+          *ngIf="submissionErrors.length > 0">
+
+          <strong>Items requiring attention:</strong>
+
+          <ul>
+            <li *ngFor="let item of submissionErrors">
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="success-message" *ngIf="successMessage">
+          {{ successMessage }}
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            routerLink="/dashboard">
+            Back to Dashboard
+          </button>
+
+          <button
+            type="button"
+            class="submit-btn"
+            [disabled]="
+              loading ||
+              submitting ||
+              !applicationForm.valid ||
+              !isDraft()
+            "
+            (click)="saveApplication()">
+            Save as Draft
+          </button>
+
+          <button
+            type="button"
+            class="submit-btn final-submit-btn"
+            [disabled]="
+              loading ||
+              submitting ||
+              !applicationForm.valid ||
+              !isDraft()
+            "
+            (click)="submitApplication()">
+            {{
+              submitting
+                ? 'Submitting Application...'
+                : 'Submit Final Application'
+            }}
+          </button>
+
+        </div>
+
+        <p class="required-note">
+          Fields marked with * are required.
+          Final submission locks your application.
+        </p>
+
+      </form>
+
+    </ng-container>
+
+  </main>
+
+  <footer class="application-footer">
+    Copyright IEM Admission Portal | Institute of Engineering and Management
+  </footer>
+
+</div>
+
+

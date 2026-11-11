@@ -1,0 +1,531 @@
+
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #24344d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.application-page {
+  min-height: 100vh;
+  background: #f4f7fc;
+}
+
+/* HEADER */
+
+.application-header {
+  background: #ffffff;
+  padding: 17px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #e7edf5;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.brand-logo {
+  width: 45px;
+  height: 45px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: #153e70;
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.header-brand h2 {
+  font-size: 16px;
+  color: #17365e;
+  margin: 0 0 4px;
+}
+
+.header-brand p {
+  font-size: 11px;
+  color: #8995a6;
+  margin: 0;
+}
+
+.back-button {
+  text-decoration: none;
+  color: #174a80;
+  border: 1px solid #d6e1ef;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.back-button:hover {
+  background: #edf4ff;
+}
+
+/* MAIN CONTAINER */
+
+.application-container {
+  max-width: 1050px;
+  width: 92%;
+  margin: 35px auto;
+}
+
+.page-heading {
+  margin-bottom: 28px;
+}
+
+.heading-label {
+  display: inline-block;
+  color: #2563a6;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.page-heading h1 {
+  font-size: 29px;
+  color: #15365d;
+  margin: 0 0 10px;
+}
+
+.page-heading p {
+  color: #7d8ba0;
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* FORM SECTION */
+
+.form-section {
+  background: #ffffff;
+  border: 1px solid #e6edf5;
+  border-radius: 13px;
+  padding: 28px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 15px rgba(30, 64, 110, 0.035);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.section-number {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: #eaf2ff;
+  color: #174a80;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.section-title h2 {
+  margin: 0 0 6px;
+  color: #17365e;
+  font-size: 17px;
+}
+
+.section-title p {
+  margin: 0;
+  color: #8995a6;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* FORM GRID */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  color: #334966;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.form-group label span {
+  color: #dc2626;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 13px;
+  border: 1px solid #dce4ee;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #273b56;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #3478bd;
+  box-shadow: 0 0 0 3px rgba(52, 120, 189, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a3adbb;
+}
+
+.form-group select {
+  cursor: pointer;
+}
+
+/* IEM JEE NOTICE */
+
+.iem-jee-notice,
+.normal-admission-notice {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  margin-top: 22px;
+  border-radius: 10px;
+}
+
+.iem-jee-notice {
+  background: #edf5ff;
+  border: 1px solid #d3e6ff;
+}
+
+.normal-admission-notice {
+  background: #f0f9f4;
+  border: 1px solid #d5efdf;
+}
+
+.notice-icon {
+  font-size: 27px;
+  flex-shrink: 0;
+}
+
+.iem-jee-notice h3,
+.normal-admission-notice h3 {
+  margin: 0 0 9px;
+  font-size: 15px;
+  color: #174a80;
+}
+
+.normal-admission-notice h3 {
+  color: #166534;
+}
+
+.iem-jee-notice p,
+.normal-admission-notice p {
+  font-size: 12px;
+  color: #5e718b;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.iem-jee-notice ul {
+  padding-left: 18px;
+  margin: 12px 0 0;
+  color: #4e6583;
+  font-size: 11px;
+  line-height: 2;
+}
+
+/* EXAM INFORMATION */
+
+.iem-jee-section {
+  border-left: 4px solid #3478bd;
+}
+
+.exam-information {
+  padding: 25px;
+  background: #f3f8ff;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.exam-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.exam-information h3 {
+  font-size: 18px;
+  color: #17365e;
+  margin: 0 0 12px;
+}
+
+.exam-information > p {
+  max-width: 650px;
+  margin: 0 auto 22px;
+  font-size: 12px;
+  color: #718096;
+  line-height: 1.8;
+}
+
+.exam-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px;
+  border-top: 1px solid #dce8f6;
+  text-align: left;
+  font-size: 12px;
+}
+
+.exam-status span {
+  color: #718096;
+}
+
+.exam-status strong {
+  color: #b7791f;
+  text-align: right;
+}
+
+/* MESSAGES */
+
+.error-message,
+.success-message {
+  padding: 13px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  margin: 15px 0;
+  line-height: 1.6;
+}
+
+.error-message {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.success-message {
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+/* FORM BUTTONS */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 13px;
+  margin-top: 25px;
+}
+
+.cancel-btn,
+.submit-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 13px 23px;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn {
+  background: #ffffff;
+  color: #52647d;
+  border: 1px solid #dce4ee;
+}
+
+.cancel-btn:hover {
+  background: #edf2f8;
+}
+
+.submit-btn {
+  background: #174a80;
+  color: #ffffff;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #10345d;
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.required-note {
+  text-align: right;
+  color: #8995a6;
+  font-size: 10px;
+  margin-top: 13px;
+}
+
+/* FOOTER */
+
+.application-footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #e6edf5;
+  color: #8995a6;
+  font-size: 11px;
+  background: #ffffff;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 650px) {
+  .application-header {
+    padding: 14px 4%;
+    flex-wrap: wrap;
+  }
+
+  .header-brand h2 {
+    font-size: 14px;
+  }
+
+  .application-container {
+    width: 94%;
+    margin: 23px auto;
+  }
+
+  .page-heading h1 {
+    font-size: 23px;
+  }
+
+  .form-section {
+    padding: 19px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+
+  .section-title h2 {
+    font-size: 15px;
+  }
+
+  .iem-jee-notice,
+  .normal-admission-notice {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .exam-status {
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .exam-status strong {
+    text-align: left;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+  }
+
+  .required-note {
+    text-align: center;
+  }
+}
+
+/* Department preference layout refinement */
+.department-option {
+  margin-bottom: 12px !important;
+}
+
+.department-option label {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+  width: 100% !important;
+  padding: 14px 16px !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 9px !important;
+  background: #ffffff !important;
+  cursor: pointer;
+}
+
+.department-option label input[type="checkbox"] {
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  width: 21px !important;
+  height: 21px !important;
+  min-width: 21px !important;
+  flex: 0 0 21px !important;
+  margin: 0 !important;
+  cursor: pointer;
+  accent-color: #174a80;
+}
+
+.department-option label > span {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  flex: 1 !important;
+  min-width: 0;
+}
+
+.department-option label strong {
+  color: #1e293b !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.department-option label small {
+  color: #718096 !important;
+  font-size: 12px !important;
+}
+
+.department-option label:hover {
+  border-color: #8aadd5 !important;
+  background: #f8fbff !important;
+}
+
+.uploaded-documents{margin:28px 0;padding:24px;background:#fff;border:1px solid #dbe4f0;border-radius:12px}.uploaded-documents h2{color:#173f70;margin:0 0 8px}.uploaded-document{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0;border-bottom:1px solid #e5eaf1}.uploaded-document:last-child{border-bottom:0}.uploaded-document strong{color:#1e293b}.uploaded-document span{color:#64748b;overflow-wrap:anywhere}.uploaded-document button{padding:9px 16px;background:#174a80;color:white;border:0;border-radius:7px;cursor:pointer;white-space:nowrap}.success-icon{font-size:16px;font-weight:700;color:#16834a;letter-spacing:1px}

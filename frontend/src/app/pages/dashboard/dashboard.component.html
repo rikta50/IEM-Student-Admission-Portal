@@ -1,0 +1,362 @@
+﻿<div class="dashboard-container">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">IEM</div>
+      <div>
+        <h2>IEM</h2>
+        <p>Admission Portal</p>
+      </div>
+    </div>
+
+    <div class="sidebar-section-title">STUDENT MENU</div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="/application" class="nav-link active">
+        <span class="nav-icon">01</span>
+        <span>My Application</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" (click)="logout()">
+        <span class="logout-icon">OUT</span>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <div>
+        <h1>Student Dashboard</h1>
+        <p>Institute of Engineering and Management</p>
+      </div>
+
+      <div class="student-profile">
+        <div class="profile-avatar">
+          {{ studentName.charAt(0).toUpperCase() }}
+        </div>
+        <div class="profile-info">
+          <strong>{{ studentName }}</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="welcome-section">
+      <div>
+        <span class="welcome-label">STUDENT PORTAL</span>
+        <h2>Welcome, {{ studentName }}!</h2>
+        <p>Manage your admission application and track your admission progress.</p>
+      </div>
+      <div class="welcome-decoration">IEM</div>
+    </section>
+
+    <div class="message-box" *ngIf="loading">
+      Loading your application details...
+    </div>
+
+    <div class="message-box error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+      <button class="secondary-btn" (click)="loadApplication()">Try Again</button>
+    </div>
+
+    <ng-container *ngIf="!loading">
+
+      <section class="overview-grid">
+
+        <div class="overview-card">
+          <div class="card-icon blue"><span>01</span></div>
+          <div class="card-content">
+            <p>Application Status</p>
+            <h3>{{ applicationStatus }}</h3>
+            <span>{{ isSubmitted ? 'Application submitted' : 'Complete your application' }}</span>
+          </div>
+        </div>
+
+        <div class="overview-card">
+          <div class="card-icon green"><span>02</span></div>
+          <div class="card-content">
+            <p>Documents</p>
+            <h3>{{ documentStatus }}</h3>
+            <span>Required documents uploaded</span>
+          </div>
+        </div>
+
+        <div class="overview-card">
+          <div class="card-icon orange"><span>03</span></div>
+          <div class="card-content">
+            <p>Entrance Examination</p>
+            <h3>Course Dependent</h3>
+            <span>IEM JEE for B.Tech applicants</span>
+          </div>
+        </div>
+
+        <div class="overview-card">
+          <div class="card-icon purple"><span>04</span></div>
+          <div class="card-content">
+            <p>Admission Progress</p>
+            <h3>{{ applicationProgress }}%</h3>
+            <span>Based on saved application details</span>
+          </div>
+        </div>
+
+      </section>
+
+
+<section class="content-card exam-card">
+  <div class="section-heading">
+    <div>
+      <h2>Entrance Examination</h2>
+      <p>Examination eligibility, schedule and registration.</p>
+    </div>
+    <span class="status-badge"
+          [class.completed]="isExamPaid"
+          [class.pending]="!isExamPaid">
+      {{ isExamPaid ? 'Payment Completed' : 'Examination' }}
+    </span>
+  </div>
+
+  <p *ngIf="examLoading">Loading examination details...</p>
+
+  <div class="error-message" *ngIf="examError">
+    {{ examError }}
+    <button class="secondary-btn" (click)="loadEntranceExam()">Retry</button>
+  </div>
+
+  <p class="success-text" *ngIf="examSuccess">{{ examSuccess }}</p>
+
+  <ng-container *ngIf="!examLoading && entranceExam">
+    <div *ngIf="!isExamEligible" class="exam-notice">
+      {{ entranceExam.message || 'Your application has not yet been selected for the entrance examination.' }}
+    </div>
+
+    <div *ngIf="isExamEligible && !isExamPublished" class="exam-notice">
+      You are eligible. The examination schedule has not been published yet.
+    </div>
+
+    <div *ngIf="isExamEligible && isExamPublished">
+      <div class="student-info-grid">
+        <div class="info-item">
+          <label>Examination Fee</label>
+          <p>₹{{ entranceExam.exam?.feeAmount }}</p>
+        </div>
+        <div class="info-item">
+          <label>Examination Date</label>
+          <p>{{ entranceExam.exam?.examDate | date:'dd MMM yyyy' }}</p>
+        </div>
+        <div class="info-item">
+          <label>Examination Time</label>
+          <p>{{ entranceExam.exam?.examTime }}</p>
+        </div>
+        <div class="info-item">
+          <label>Examination Centre</label>
+          <p>{{ entranceExam.exam?.examCentre }}</p>
+        </div>
+        <div class="info-item">
+          <label>Centre Address</label>
+          <p>{{ entranceExam.exam?.examAddress }}</p>
+        </div>
+      </div>
+
+      <div *ngIf="entranceExam.exam?.instructions">
+        <h3>Examination Instructions</h3>
+        <p>{{ entranceExam.exam.instructions }}</p>
+      </div>
+
+      <div *ngIf="!isExamPaid" class="exam-payment">
+        <p>Complete the demo examination payment to generate your hall ticket.</p>
+        <button class="primary-btn"
+                [disabled]="examPaying"
+                (click)="payDemo()">
+          {{ examPaying ? 'Processing...' : 'Pay Examination Fee (Demo)' }}
+        </button>
+        <p class="exam-notice">
+          Demonstration only. No real money will be charged.
+        </p>
+      </div>
+
+      <div *ngIf="isExamPaid" class="hall-ticket" id="hallTicket">
+        <div class="hall-ticket-header">
+          <h2>INSTITUTE OF ENGINEERING AND MANAGEMENT</h2>
+          <h3>ENTRANCE EXAMINATION — HALL TICKET</h3>
+        </div>
+
+        <div class="hall-ticket-details">
+          <p><strong>Student Name:</strong> {{ entranceExam.student?.fullName || studentName }}</p>
+          <p><strong>Email:</strong> {{ entranceExam.student?.email || studentEmail }}</p>
+          <p><strong>Application Number:</strong> {{ entranceExam.applicationNumber }}</p>
+          <p><strong>Hall Ticket Number:</strong> {{ entranceExam.registration?.hallTicketNumber }}</p>
+          <p><strong>Exam Date:</strong> {{ entranceExam.exam?.examDate | date:'dd MMM yyyy' }}</p>
+          <p><strong>Exam Time:</strong> {{ entranceExam.exam?.examTime }}</p>
+          <p><strong>Exam Centre:</strong> {{ entranceExam.exam?.examCentre }}</p>
+          <p><strong>Address:</strong> {{ entranceExam.exam?.examAddress }}</p>
+          <p><strong>Payment Status:</strong> {{ entranceExam.registration?.paymentStatus }}</p>
+          <p><strong>Payment Reference:</strong> {{ entranceExam.registration?.demoPaymentReference }}</p>
+        </div>
+
+        <p class="ticket-note">
+          Please carry your hall ticket and a valid photo ID to the examination centre.
+        </p>
+
+        <button class="primary-btn no-print" (click)="printHallTicket()">
+          Print / Save Hall Ticket as PDF
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</section>
+
+
+      <section class="content-card progress-card">
+        <div class="section-heading">
+          <div>
+            <h2>Application Completion</h2>
+            <p>Track how much of your application is completed.</p>
+          </div>
+          <strong>{{ applicationProgress }}%</strong>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill" [style.width.%]="applicationProgress"></div>
+        </div>
+      </section>
+
+      <section class="content-card application-card">
+        <div class="section-heading">
+          <div>
+            <h2>Admission Application</h2>
+            <p>Start your admission journey at IEM.</p>
+          </div>
+
+          <span class="status-badge"
+            [class.pending]="!isSubmitted"
+            [class.completed]="isSubmitted">
+            {{ applicationStatus }}
+          </span>
+        </div>
+
+        <div class="application-body">
+          <div class="application-symbol">APPLICATION</div>
+
+          <h3>
+            {{ isSubmitted ? 'Application Submitted' : 'Complete Your Admission Application' }}
+          </h3>
+
+          <p>
+            {{ isSubmitted
+              ? 'Your application has been submitted successfully.'
+              : 'Complete your personal, academic and other required information.' }}
+          </p>
+
+          <p *ngIf="applicationNumber" class="application-number">
+            <strong>Application Number:</strong> {{ applicationNumber }}
+          </p>
+
+          <a *ngIf="!isSubmitted" routerLink="/application" class="primary-btn">
+            {{ applicationProgress > 0 ? 'Continue Application' : 'Start Application' }}
+            <span class="button-arrow">&gt;</span>
+          </a>
+
+          <p *ngIf="isSubmitted" class="success-text">
+            Your application is now submitted.
+          </p>
+        </div>
+      </section>
+
+      <section class="content-card student-info-card">
+        <div class="section-heading">
+          <div>
+            <h2>Student Information</h2>
+            <p>Your registered account details.</p>
+          </div>
+        </div>
+
+        <div class="student-info-grid">
+          <div class="info-item">
+            <label>Student Name</label>
+            <p>{{ studentName }}</p>
+          </div>
+
+          <div class="info-item">
+            <label>Email Address</label>
+            <p>{{ studentEmail || 'Not available' }}</p>
+          </div>
+
+          <div class="info-item">
+            <label>Student ID</label>
+            <p>{{ studentId || 'Not assigned' }}</p>
+          </div>
+
+          <div class="info-item">
+            <label>Application Number</label>
+            <p>{{ applicationNumber || 'Not generated yet' }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-card admission-process">
+        <div class="section-heading">
+          <div>
+            <h2>Admission Process</h2>
+            <p>Follow these steps to complete your admission process.</p>
+          </div>
+        </div>
+
+        <div class="process-list">
+
+          <div class="process-item">
+            <div class="process-number completed-step">01</div>
+            <div class="process-description">
+              <h3>Registration</h3>
+              <p>Create your student account on the admission portal.</p>
+            </div>
+            <span class="process-status completed">Completed</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">02</div>
+            <div class="process-description">
+              <h3>Application Form</h3>
+              <p>Fill in your personal and academic information.</p>
+            </div>
+            <span class="process-status">
+              {{ applicationProgress > 0 ? 'In Progress' : 'Pending' }}
+            </span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">03</div>
+            <div class="process-description">
+              <h3>Document Upload</h3>
+              <p>Upload your photograph and academic marksheets.</p>
+            </div>
+            <span class="process-status">
+              {{ documentStatus === 'Completed' ? 'Completed' : 'Pending' }}
+            </span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">04</div>
+            <div class="process-description">
+              <h3>Application Submission</h3>
+              <p>Review and submit your completed application.</p>
+            </div>
+            <span class="process-status">
+              {{ isSubmitted ? 'Completed' : 'Pending' }}
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+    </ng-container>
+
+    <footer class="dashboard-footer">
+      <p>&copy; 2026 Institute of Engineering and Management. All rights reserved.</p>
+      <p>Student Admission Portal</p>
+    </footer>
+
+  </main>
+</div>

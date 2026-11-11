@@ -1,0 +1,44 @@
+{
+  "name": "iem-admission-portal-backend",
+  "version": "1.0.0",
+  "description": "Backend API for IEM Student Admission Portal (B.Tech Software Engineering Lab)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed:departments": "node scripts/seedSQLiteDepartments.js",
+    "seed:admin": "node scripts/seedAdmin.js",
+    "seed:all": "node scripts/seedSQLiteDepartments.js && node scripts/seedAdmin.js"
+  },
+  "keywords": [
+    "iem",
+    "admission-portal",
+    "sqlite",
+    "sequelize",
+    "express",
+    "relational-database"
+  ],
+  "author": "B.Tech SE Lab",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.7.3",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^10.3.1",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "allowScripts": {
+    "sqlite3@6.0.1": true
+  }
+}

@@ -1,0 +1,93 @@
+
+<div class="login-page">
+  <div class="login-card">
+
+    <!-- Back to Home -->
+    <a routerLink="/" class="back-link">Back to Home</a>
+
+    <!-- Logo -->
+    <div class="logo">IEM</div>
+
+    <!-- Heading -->
+    <h1>IEM Admission Portal Login</h1>
+    <p class="subtitle">
+      Sign in with your student or administrator account to continue.
+    </p>
+
+    <!-- Registration / Login Success Message -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <!-- Login Error Message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Login Form -->
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>Email Address</label>
+
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="Enter your registered email"
+          required
+          email
+        >
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label>Password</label>
+
+        <div class="password-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Enter your password"
+            required
+          >
+
+          <button
+            type="button"
+            class="show-password"
+            (click)="showPassword = !showPassword"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Forgot Password -->
+      <div class="forgot-password">
+        <a href="#" (click)="$event.preventDefault()">
+          Forgot Password?
+        </a>
+      </div>
+
+      <!-- Login Button -->
+      <button
+        type="submit"
+        class="login-btn"
+        [disabled]="loading || !loginForm.valid"
+      >
+        {{ loading ? 'Signing In...' : 'Login' }}
+      </button>
+
+    </form>
+
+    <!-- Registration Link -->
+    <p class="register-text">
+      Don't have an account?
+      <a routerLink="/register">Register Now</a>
+    </p>
+
+  </div>
+</div>
+
