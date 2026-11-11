@@ -1,4 +1,4 @@
-/**
+﻿/**
  * IEM Student Admission Portal - Backend Server
  * Database: SQLite with Sequelize
  */
@@ -38,6 +38,29 @@ app.use(morgan('dev'));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Connect to the configured database before handling API requests.
+let databaseConnection;
+
+app.use(async (req, res, next) => {
+  try {
+    if (!databaseConnection) {
+      databaseConnection = connectSQLite().catch((error) => {
+        databaseConnection = null;
+        throw error;
+      });
+    }
+
+    await databaseConnection;
+    next();
+  } catch (error) {
+    console.error('[Database Middleware]', error.message);
+    res.status(503).json({
+      success: false,
+      message: 'Database connection unavailable.'
+    });
+  }
+});
 
 // Health check
 app.get('/api/health', (req, res) => {
